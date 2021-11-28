@@ -1,0 +1,32 @@
+import styled from "styled-components";
+
+export const Favorite = styled.div`
+  display: flex;
+  height: 100vh;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  scroll-behavior: smooth;
+  overflow-y: hidden;
+`;
+
+export const Content = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  padding-block-start: 100px;
+`;
+
+export const Header = styled.div`
+  display: flex;
+`;
+
+export const Form = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  max-width: 400px;
+  width: 100%;
+`;
