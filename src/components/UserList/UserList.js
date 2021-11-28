@@ -9,6 +9,7 @@ import * as S from "./style";
 import { useLocation } from "react-router";
 import { useFavorite } from "context/FavoriteCTX";
 import { countriesArr } from '../../helpers/countriesArr'
+import ValidateList from "../ValidateList/ValidateList";
 
 const UserList = ({ fetchUsers, users, isLoading }) => {
   // States
@@ -64,7 +65,7 @@ const UserList = ({ fetchUsers, users, isLoading }) => {
       path == "home"
     ) {
       setFlag(true);
-      setPageNum(pageNum + 1);
+      setPageNum((prevPageNum) => prevPageNum + 1);
     }
   };
 
@@ -85,12 +86,7 @@ const filteredList = listToMap.filter((user) => countries.length ? countries.inc
     <S.UserList>
       <S.Filters>
         {countriesArr.map((country) => (
-          <CheckBox
-            onChange={handleCountries}
-            key={country.value}
-            value={country.value}
-            label={country.label}
-          />
+          <CheckBox onChange={handleCountries} key={country.value} value={country.value} label={country.label} />
         ))}
       </S.Filters>
       <S.List onScroll={handleScroll}>
@@ -142,19 +138,10 @@ const filteredList = listToMap.filter((user) => countries.length ? countries.inc
               </S.IconButtonWrapper>
             </S.User>
           );
-          // }
         })}
-        {listToMap.length === 0 && (
-          <S.ValidateText size="22px" bold>
-            No users to show
-          </S.ValidateText>
-        )}
-        {filteredList.length === 0 &&
-          listToMap.length > 0 && (
-            <S.ValidateText size="22px" bold>
-              No users in this country
-            </S.ValidateText>
-          )}
+        {/* Validations */}
+        <ValidateList validate={listToMap.length === 0} text={"No users to show"}/>
+        <ValidateList validate={filteredList.length === 0 && listToMap.length > 0} text={"No users in this country"} />
         {isLoading && (
           <S.SpinnerWrapper>
             <Spinner color="primary" size="45px" thickness={6} variant="indeterminate" />
