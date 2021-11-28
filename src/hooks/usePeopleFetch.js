@@ -21,7 +21,6 @@ export const usePeopleFetch = () => {
     const response = await axios.get(
       `https://randomuser.me/api/?results=25&page=${pageNum}`
     );
-    console.log('Fetch');
     setIsLoading(false);
     setUsers((prevUsers) => [...prevUsers, ...response.data.results]);
   }

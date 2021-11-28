@@ -95,7 +95,6 @@ const filteredList = listToMap.filter((user) => countries.length ? countries.inc
       </S.Filters>
       <S.List onScroll={handleScroll}>
         {filteredList.map((user, index) => {
-          // if (countries.includes(user.nat) || !countries.length) {
           return (
             <S.User
               key={index}
