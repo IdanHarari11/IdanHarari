@@ -1,8 +1,0 @@
-# pages
-    home -
-
-    favorite -
-
-# hooks
-
-#
