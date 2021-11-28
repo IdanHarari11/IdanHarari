@@ -79,11 +79,8 @@ const UserList = ({ fetchUsers, users, isLoading }) => {
   }, [pageNum]);
 
 
-// countries.length > 0 && users.filter((user) => user.).length == 0
-console.log(countries);
-
 const listToMap = path == "home" ? users : favorites;
-
+const filteredList = listToMap.filter((user) => countries.length ? countries.includes(user.nat) : user);
   return (
     <S.UserList>
       <S.Filters>
@@ -97,59 +94,68 @@ const listToMap = path == "home" ? users : favorites;
         ))}
       </S.Filters>
       <S.List onScroll={handleScroll}>
-        {listToMap.map((user, index) => {
-          if (countries.includes(user.nat) || !countries.length) {
-            return (
-              <S.User
-                key={index}
-                onMouseEnter={() => handleMouseEnter(index)}
-                onMouseLeave={handleMouseLeave}
-              >
-                <S.UserPicture src={user?.picture.large} alt="" />
-                <S.UserInfo>
-                  <Text size="22px" bold>
-                    {user?.name.title} {user?.name.first} {user?.name.last}
-                  </Text>
-                  <Text size="14px">{user?.email}</Text>
-                  <Text size="14px">
-                    {user?.location.street.number} {user?.location.street.name}
-                  </Text>
-                  <Text size="14px">
-                    {user?.location.city} {user?.location.country}
-                  </Text>
-                </S.UserInfo>
-                <S.IconButtonWrapper isVisible={true}>
-                  {favorites.find(
+        {filteredList.map((user, index) => {
+          // if (countries.includes(user.nat) || !countries.length) {
+          return (
+            <S.User
+              key={index}
+              onMouseEnter={() => handleMouseEnter(index)}
+              onMouseLeave={handleMouseLeave}
+            >
+              <S.UserPicture src={user?.picture.large} alt="" />
+              <S.UserInfo>
+                <Text size="22px" bold>
+                  {user?.name.title} {user?.name.first} {user?.name.last}
+                </Text>
+                <Text size="14px">{user?.email}</Text>
+                <Text size="14px">
+                  {user?.location.street.number} {user?.location.street.name}
+                </Text>
+                <Text size="14px">
+                  {user?.location.city} {user?.location.country}
+                </Text>
+              </S.UserInfo>
+              <S.IconButtonWrapper isVisible={true}>
+                {favorites.find((favorite) => favorite.login.uuid == user.login.uuid) && (
+                  <IconButton onClick={() => handleFavorite(user)}>
+                    <FavoriteIcon color="error" />
+                  </IconButton>
+                )}
+                <S.IconButtonWrapper isVisible={index === hoveredUserId}>
+                  {!favorites.find(
                     (favorite) => favorite.login.uuid == user.login.uuid
                   ) && (
                     <IconButton onClick={() => handleFavorite(user)}>
                       <FavoriteIcon color="error" />
                     </IconButton>
                   )}
-                  <S.IconButtonWrapper isVisible={index === hoveredUserId}>
-                    {!favorites.find(
-                      (favorite) => favorite.login.uuid == user.login.uuid
-                    ) && (
-                      <IconButton onClick={() => handleFavorite(user)}>
-                        <FavoriteIcon color="error" />
-                      </IconButton>
-                    )}
-                    <IconButton>
-                      <a href={"tel:" + user.phone} style={{ color: "green" }}>
-                        <CallOutlined />
-                      </a>
-                    </IconButton>
-                    <IconButton>
-                      <a href={"mailto:" + user.email} style={{ color: "#0d47a1" }}>
-                        <EmailOutlined />
-                      </a>
-                    </IconButton>
-                  </S.IconButtonWrapper>
+                  <IconButton>
+                    <a href={"tel:" + user.phone} style={{ color: "green" }}>
+                      <CallOutlined />
+                    </a>
+                  </IconButton>
+                  <IconButton>
+                    <a href={"mailto:" + user.email} style={{ color: "#0d47a1" }}>
+                      <EmailOutlined />
+                    </a>
+                  </IconButton>
                 </S.IconButtonWrapper>
-              </S.User>
-            );
-          }
+              </S.IconButtonWrapper>
+            </S.User>
+          );
+          // }
         })}
+        {listToMap.length === 0 && (
+          <S.ValidateText size="22px" bold>
+            No users to show
+          </S.ValidateText>
+        )}
+        {filteredList.length === 0 &&
+          listToMap.length > 0 && (
+            <S.ValidateText size="22px" bold>
+              No users in this country
+            </S.ValidateText>
+          )}
         {isLoading && (
           <S.SpinnerWrapper>
             <Spinner color="primary" size="45px" thickness={6} variant="indeterminate" />
@@ -160,4 +166,4 @@ const listToMap = path == "home" ? users : favorites;
   );
 };
 
-export default UserList;
+export default React.memo(UserList);

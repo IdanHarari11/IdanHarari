@@ -54,9 +54,12 @@ export const IconButtonWrapper = styled.div`
 `;
 
 export const Filters = styled.div`
-  display: flex;
-  justify-content: center;
-  & > * {
-    margin-inline-end: 8px;
-  }
+display: flex;
+justify-content: center;
+& > * {
+  margin-inline-end: 8px;
+}
+`;
+export const ValidateText = styled.div`
+  text-align: center;
 `;
